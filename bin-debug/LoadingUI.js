@@ -42,6 +42,7 @@ var LoadingUI = (function (_super) {
         this.textField.textAlign = "center";
     };
     p.setProgress = function (current, total) {
+        //显示进度
         this.textField.text = "Loading..." + current + "/" + total;
     };
     return LoadingUI;

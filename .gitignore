@@ -1,3 +1,4 @@
 ./release/*
 ./ui
 ./bin-debug
+./src/**/*.js

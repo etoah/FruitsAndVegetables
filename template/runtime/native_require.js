@@ -10,6 +10,12 @@ var game_file_list = [
 	"libs/modules/res/res.js",
 	"bin-debug/Main.js",
 	"bin-debug/LoadingUI.js",
+	"bin-debug/event/GameOverEvent.js",
+	"bin-debug/node/Item.js",
+	"bin-debug/node/ItemsNode.js",
+	"bin-debug/sence/GameOver.js",
+	"bin-debug/sence/GameSence.js",
+	"bin-debug/sence/IntroSence.js",
 	//----auto game_file_list end----
 ];
 
