@@ -27,30 +27,31 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////
 
-class Main extends egret.DisplayObjectContainer
-{
-    public static STATE_INTRO:number = 1;
-    public static STATE_GAME:number = 2;
-    public static STATE_OVER:number = 3;
+///<reference path="./sence/GameView.ts" />
 
-    private _state:number = -1;
-    private _score:number = 0;
-    private _curState:egret.DisplayObject;
+
+class Main extends egret.DisplayObjectContainer {
+    public static STATE_INTRO: number = 1;
+    public static STATE_GAME: number = 2;
+    public static STATE_OVER: number = 3;
+    public static STATE_VIEW: number = 4;
+
+    private _state: number = -1;
+    private _score: number = 0;
+    private _curState: egret.DisplayObject;
 
     /**
      * 加载进度界面
      * Process interface loading
      */
-    private loadingView:LoadingUI;
+    private loadingView: LoadingUI;
 
-    public constructor()
-    {
+    public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
-    private onAddToStage(event:egret.Event)
-    {
+    private onAddToStage(event: egret.Event) {
         //设置加载进度界面
         //Config to load process interface
         this.loadingView = new LoadingUI();
@@ -66,8 +67,7 @@ class Main extends egret.DisplayObjectContainer
      * 配置文件加载完成,开始预加载preload资源组。
      * configuration file loading is completed, start to pre-load the preload resource group
      */
-    private onConfigComplete(event:RES.ResourceEvent):void
-    {
+    private onConfigComplete(event: RES.ResourceEvent): void {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
@@ -79,8 +79,7 @@ class Main extends egret.DisplayObjectContainer
      * preload资源组加载完成
      * Preload resource group is loaded
      */
-    private onResourceLoadComplete(event:RES.ResourceEvent):void
-    {
+    private onResourceLoadComplete(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
             this.stage.removeChild(this.loadingView);
             RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
@@ -94,8 +93,7 @@ class Main extends egret.DisplayObjectContainer
      * 资源组加载出错
      *  The resource group loading failed
      */
-    private onResourceLoadError(event:RES.ResourceEvent):void
-    {
+    private onResourceLoadError(event: RES.ResourceEvent): void {
         //TODO
         console.warn("Group:" + event.groupName + " has failed to load");
         //忽略加载失败的项目
@@ -107,8 +105,7 @@ class Main extends egret.DisplayObjectContainer
      * preload资源组加载进度
      * Loading process of preload resource group
      */
-    private onResourceProgress(event:RES.ResourceEvent):void
-    {
+    private onResourceProgress(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
             this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
         }
@@ -118,32 +115,31 @@ class Main extends egret.DisplayObjectContainer
      * 创建游戏场景
      * Create a game scene
      */
-    private createGameScene():void
-    {
+    private createGameScene(): void {
         // 背景
 
         // 状态机
         this.setState = Main.STATE_INTRO;
     }
 
-    private gameIntro(e:egret.Event)
-    {
+    private gameIntro(e: egret.Event) {
         this.setState = Main.STATE_INTRO;
     }
 
-    private gameStart(e:egret.Event)
-    {
+    private gameStart(e: egret.Event) {
         this.setState = Main.STATE_GAME;
     }
 
-    private gameOver(e:GameOverEvent)
-    {
+    private gameOver(e: GameOverEvent) {
         this._score = e.score;
         this.setState = Main.STATE_OVER;
     }
 
-    set setState(s:number)
-    {
+    private playVedio(e: egret.Event) {
+        this.setState = Main.STATE_VIEW;
+    }
+
+    set setState(s: number) {
         if (this._state != s) {
             this._state = s;
 
@@ -167,8 +163,14 @@ class Main extends egret.DisplayObjectContainer
                     sence.score = this._score;
                     this._curState = sence;
                     this._curState.addEventListener('GameStart', this.gameStart, this);
+                    this._curState.addEventListener('GameView', this.playVedio, this);
                     this.addChild(this._curState);
                     break;
+                case Main.STATE_VIEW:
+                    this._curState = new GameView();
+                    this.addChild(this._curState);
+                    break;
+
             }
         }
     }

@@ -48,10 +48,15 @@ var GameOver = (function (_super) {
         this._btnShare.texture = RES.getRes('ui_json.share');
         this._btnShare.x = (this.stage.stageWidth - this._btnShare.width) / 2 + 100;
         this._btnShare.y = (this.stage.stageHeight - this._btnShare.height) / 2 + 80;
+        this._btnShare.touchEnabled = true;
+        this._btnShare.addEventListener(egret.TouchEvent.TOUCH_TAP, this.playVedio, this);
         this.addChild(this._btnShare);
     };
     p.retry = function () {
         this.dispatchEvent(new egret.Event("GameStart"));
+    };
+    p.playVedio = function () {
+        this.dispatchEvent(new egret.Event("GameView"));
     };
     d(p, "score",undefined
         ,function (value) {

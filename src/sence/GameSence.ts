@@ -120,7 +120,7 @@ class GameSence extends egret.Sprite
         this._timer.start();
     }
 
-    private onBtnFruitsTap(e) //egret.Event.TOUCH_TAP
+    private onBtnFruitsTap(e) //egret.TouchEvent.TOUCH_TAP
     {
         this.onBtnTag(Item.FRUIT);
     }

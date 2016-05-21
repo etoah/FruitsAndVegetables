@@ -26,6 +26,7 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+///<reference path="./sence/GameView.ts" />
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
@@ -108,6 +109,9 @@ var Main = (function (_super) {
         this._score = e.score;
         this.setState = Main.STATE_OVER;
     };
+    p.playVedio = function (e) {
+        this.setState = Main.STATE_VIEW;
+    };
     d(p, "setState",undefined
         ,function (s) {
             if (this._state != s) {
@@ -131,6 +135,11 @@ var Main = (function (_super) {
                         sence.score = this._score;
                         this._curState = sence;
                         this._curState.addEventListener('GameStart', this.gameStart, this);
+                        this._curState.addEventListener('GameView', this.playVedio, this);
+                        this.addChild(this._curState);
+                        break;
+                    case Main.STATE_VIEW:
+                        this._curState = new GameView();
                         this.addChild(this._curState);
                         break;
                 }
@@ -140,6 +149,7 @@ var Main = (function (_super) {
     Main.STATE_INTRO = 1;
     Main.STATE_GAME = 2;
     Main.STATE_OVER = 3;
+    Main.STATE_VIEW = 4;
     return Main;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Main,'Main');
